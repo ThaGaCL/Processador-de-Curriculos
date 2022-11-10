@@ -36,7 +36,7 @@ void printFile(FILE *arq)
 DIR *openDir(char *dirname)
 {
 
-    DIR *dirstream = opendir("./curriculos");
+    DIR *dirstream = opendir(dirname);
     if (!dirstream)
     {
         perror("Couldn't open the directory");
@@ -46,10 +46,9 @@ DIR *openDir(char *dirname)
     return dirstream;
 }
 
-void readDir(DIR *dirstream)
+void readDir(DIR *dirstream, char* dirname)
 {
     struct dirent *direntry;
-    char *dirname = "curriculo/";
 
     for (;;)
     {

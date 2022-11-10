@@ -1,9 +1,17 @@
 #include "libdir.h"
+#include "libutil.h"
 
-int main ()
+int main (int argc, char **argv)
 {   
-    DIR *dirstream = openDir("./curriculos") ;
-    readDir(dirstream);
+    char *path = NULL;
+    char *pathCon = NULL;
+    char *pathPer = NULL;
+
+    getOptions(argc, argv, &path, &pathCon, &pathPer);
+    
+
+    DIR *dirstream = openDir(path) ;
+    readDir(dirstream, path);
 
 
     (void) closedir(dirstream);

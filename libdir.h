@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
      
-#define LINESIZE 1024
+//#define LINESIZE 1024
 
 FILE* openFile(char* filename);
 
@@ -14,4 +14,4 @@ void printFile(FILE* arq);
 
 DIR* openDir(char* dirname);
 
-void readDir(DIR* dirstream);
+void readDir(DIR* dirstream, char* dirname);
