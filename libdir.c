@@ -2,7 +2,7 @@
 
 FILE *openFile(char *filename)
 {
-    FILE *arq = fopen("./curriculos/curriculo.xml", "r");
+    FILE *arq = fopen(filename, "r");
     if (!arq)
     {
         perror("Erro ao abrir arquivo");
@@ -25,7 +25,6 @@ int getSize(FILE *file)
 void printFile(FILE *arq)
 {
     int fileSize = getSize(arq);
-    char line[LINESIZE + 1];
 
     char *fileContent = (char *)malloc(fileSize * sizeof(char));
     fread(fileContent, sizeof(char), fileSize, arq);
@@ -72,3 +71,5 @@ void readDir(DIR *dirstream, char* dirname)
         }
     }
 }
+
+ 
