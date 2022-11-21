@@ -1,7 +1,7 @@
 CFLAGS = -Wall
 CC = gcc     
      
-objects = main.o libdir.o libutil.o\
+objects = main.o libdir.o libutil.o libstruct.o\
      
 lattes: $(objects)
 	$(CC) $(objects) -o lattes
@@ -14,6 +14,9 @@ libdir.o: libdir.c
 
 libutil.o: libutil.c
 	$(CC) -c libutil.c $(CFLAGS)
+
+libstruct.o: libstruct.c
+	$(CC) -c libstruct.c $(CFLAGS)
 
 clean:
 	-rm -f lattes $(objects)
