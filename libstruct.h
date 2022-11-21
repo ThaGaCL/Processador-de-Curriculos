@@ -6,7 +6,6 @@
 #include "libdir.h"
 
 #define QTD_E 9
-
 typedef enum{
     A1,
     A2,
@@ -19,32 +18,7 @@ typedef enum{
     C
 } estrato;
 
-const char *enumName(estrato c){
-    switch (c)
-    {
-    case A1:
-        return ("A1");
-    case A2:
-        return ("A2");
-    case A3:
-        return ("A3");
-    case A4:
-        return ("A4");
-    case B1:
-        return ("B1");
-    case B2:
-        return ("B2");
-    case B3:
-        return ("B3");
-    case B4:
-        return ("B4");
-    case C:
-        return ("C");
-    default:
-        return ("aaaaa");
-    }
-}
-
+const char *enumName(estrato c);
 
 typedef struct pasta{
     char *titulo;

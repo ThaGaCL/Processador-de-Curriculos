@@ -13,12 +13,12 @@ int main (int argc, char **argv)
     tdados *xdados = malloc(sizeof(tdados) * QTD_E);
     inicializaEstratos(xdados);
 
-    DIR *dirstream = openDir(path) ;
-    readDir(dirstream, path);
+    // DIR *dirstream = openDir(path) ;
+    // readDir(dirstream, path);
 
 
     free(xdados);
-    (void) closedir(dirstream);
+    // (void) closedir(dirstream);
     
     return 0;
 

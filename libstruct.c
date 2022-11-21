@@ -1,5 +1,31 @@
 #include "libstruct.h"
 
+const char *enumName(estrato c){
+    switch (c)
+    {
+    case A1:
+        return ("A1");
+    case A2:
+        return ("A2");
+    case A3:
+        return ("A3");
+    case A4:
+        return ("A4");
+    case B1:
+        return ("B1");
+    case B2:
+        return ("B2");
+    case B3:
+        return ("B3");
+    case B4:
+        return ("B4");
+    case C:
+        return ("C");
+    default:
+        return ("");
+    }
+}
+
 
 void printPer(tdados *xdados){
     for(int i = 0; i < 9; i++){
@@ -33,10 +59,8 @@ void setPerNames(char *line,tdados *xdados){
             nome = strncpy(nome,line, (strlen(line)-strlen(enumName(xdados[i].nome))-1));
             xdados[i].periodico[xdados[i].qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));    
             xdados[i].periodico[xdados[i].qtdPeriodicos].titulo = strncpy(xdados[i].periodico[xdados[i].qtdPeriodicos].titulo, nome, strlen(nome));
-           //printf("%s\n", xdados[i].periodico[xdados[i].qtdPeriodicos].titulo);
             xdados[i].qtdPeriodicos++;
             
-            //xdados->periodico[xdados->qtdPeriodicos].titulo recebe o nome    
         }
 
     }
@@ -58,10 +82,7 @@ void setConfNames(char *line,tdados *xdados){
             nome = strncpy(nome,line, (strlen(line)-strlen(enumName(xdados[i].nome))-1));
             xdados[i].conferencia[xdados[i].qtdConferencias].titulo = malloc(sizeof(char)*strlen(nome));    
             xdados[i].conferencia[xdados[i].qtdConferencias].titulo = strncpy(xdados[i].conferencia[xdados[i].qtdConferencias].titulo, nome, strlen(nome));
-           //printf("%s\n", xdados[i].periodico[xdados[i].qtdPeriodicos].titulo);
-            printf("%s\n", xdados[i].conferencia[xdados[i].qtdConferencias].titulo);
             xdados[i].qtdConferencias++;
-            //xdados->periodico[xdados->qtdPeriodicos].titulo recebe o nome    
         }
 
     }
@@ -78,8 +99,6 @@ void getPerLines(FILE *arq, tdados *xdados){
         
     }
 
-    //printPer(xdados);
-
 }
 
 void getConfLines(FILE *arq, tdados *xdados){
@@ -91,8 +110,6 @@ void getConfLines(FILE *arq, tdados *xdados){
         fgets(line, LINESIZE, arq);
         
     }
-
-    // printConf(xdados);
 
 }
 
