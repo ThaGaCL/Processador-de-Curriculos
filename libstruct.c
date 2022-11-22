@@ -113,12 +113,10 @@ void getConfLines(FILE *arq, tdados *xdados){
 
 }
 
-void inicializaEstratos(tdados *xdados){
+void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
    
-    char* pathper = "qualis-periodicos.txt";
-    char* pathconf = "qualis-conf.txt";
-    FILE *per = openFile(pathper);
-    FILE *conf = openFile(pathconf);
+    FILE *per = openFile(pathPer);
+    FILE *conf = openFile(pathCon);
     int perSize = getSize(per);
     int confSize = getSize(conf);
 

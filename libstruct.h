@@ -46,5 +46,5 @@ void getPerLines(FILE *arq, tdados *xdados);
 
 void getConfLines(FILE *arq, tdados *xdados);
 
-void inicializaEstratos(tdados *xdados);
+void inicializaEstratos(tdados *xdados, char *per, char *con);
 

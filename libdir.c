@@ -1,4 +1,5 @@
 #include "libdir.h"
+#include "libstruct.h"
 
 FILE *openFile(char *filename)
 {
@@ -24,12 +25,16 @@ int getSize(FILE *file)
 
 void printFile(FILE *arq)
 {
-    int fileSize = getSize(arq);
+    int fileSize;
+    fseek(arq, 0, SEEK_END);
+    fileSize = ftell(arq);
+    rewind(arq);
 
-    char *fileContent = (char *)malloc(fileSize * sizeof(char));
-    fread(fileContent, sizeof(char), fileSize, arq);
+    char *file_content = (char *)malloc(fileSize * sizeof(char));
 
-    printf("%s", fileContent);
+    fread(file_content, sizeof(char), fileSize, arq);
+
+    printf("%s\n", file_content);
 }
 
 DIR *openDir(char *dirname)
@@ -45,7 +50,7 @@ DIR *openDir(char *dirname)
     return dirstream;
 }
 
-void readDir(DIR *dirstream, char* dirname)
+void readDir(DIR *dirstream, char *dirname)
 {
     struct dirent *direntry;
 
@@ -61,9 +66,14 @@ void readDir(DIR *dirstream, char* dirname)
         if (direntry->d_type == DT_REG)
         {
 
-            printf("%s\n", direntry->d_name);
             char *path = malloc(sizeof(direntry->d_name) + sizeof(dirname) + 2);
-            path = realpath(path, NULL);
+
+            path = realpath(dirname, path);
+            path = strcat(path, "/");
+            path = strcat(path, direntry->d_name);
+
+            printf("%s\n", path);
+
             FILE *arq = openFile(path);
             printFile(arq);
 
@@ -72,4 +82,3 @@ void readDir(DIR *dirstream, char* dirname)
     }
 }
 
- 
