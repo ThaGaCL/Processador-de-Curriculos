@@ -33,8 +33,8 @@ void printFile(FILE *arq)
     char *file_content = (char *)malloc(fileSize * sizeof(char));
 
     fread(file_content, sizeof(char), fileSize, arq);
-
-    printf("%s\n", file_content);
+ 
+    getPerName(file_content);
 }
 
 DIR *openDir(char *dirname)
@@ -72,13 +72,36 @@ void readDir(DIR *dirstream, char *dirname)
             path = strcat(path, "/");
             path = strcat(path, direntry->d_name);
 
-            printf("%s\n", path);
-
             FILE *arq = openFile(path);
             printFile(arq);
 
             fclose(arq);
         }
     }
+}
+
+
+int getPerName(char *str)
+{
+    // Returns first token
+    char *tag = "DETALHAMENTO-DO-ARTIGO";
+    char *str2 = strdup(str);
+    char *str3;
+    // Set str2 offset after tag
+
+    while((str2 = strstr(str2, tag)) != NULL){
+        str3 = strdup(str2);
+        char* token = strtok(str3, "\"");    
+        token = strtok(NULL, "\"");
+        token = strtok(token, "\"");
+        token = strtok(token, "\"");
+        printf("%s\n", token);
+        str2 += strlen(tag);
+        free(str3);
+    }    
+
+    free(str2);
+
+    return 0;
 }
 

@@ -17,3 +17,5 @@ DIR* openDir(char* dirname);
 void readDir(DIR* dirstream, char* dirname);
 
 void getFileLines(FILE *arq);
+
+int getPerName(char *str);

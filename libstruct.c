@@ -138,4 +138,15 @@ void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
 
 }
 
+void addToStruct(tdados *xdados, char *nome){
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
+            if(strstr(xdados[i].periodico[j].titulo, nome)){
+                printf("ACHOU NO %s\n", xdados[i].periodico[j].titulo);
+            }
+        }
+    }
+}
+
 
