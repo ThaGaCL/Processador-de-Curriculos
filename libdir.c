@@ -1,5 +1,4 @@
 #include "libdir.h"
-#include "libstruct.h"
 
 FILE *openFile(char *filename)
 {
@@ -23,7 +22,7 @@ int getSize(FILE *file)
     return size;
 }
 
-void printFile(FILE *arq)
+void printFile(FILE *arq, tdados *xdados)
 {
     int fileSize;
     fseek(arq, 0, SEEK_END);
@@ -34,7 +33,7 @@ void printFile(FILE *arq)
 
     fread(file_content, sizeof(char), fileSize, arq);
  
-    getPerName(file_content);
+    getPerName(xdados, file_content);
 }
 
 DIR *openDir(char *dirname)
@@ -50,7 +49,7 @@ DIR *openDir(char *dirname)
     return dirstream;
 }
 
-void readDir(DIR *dirstream, char *dirname)
+void readDir(DIR *dirstream, tdados *xdados, char *dirname)
 {
     struct dirent *direntry;
 
@@ -73,7 +72,7 @@ void readDir(DIR *dirstream, char *dirname)
             path = strcat(path, direntry->d_name);
 
             FILE *arq = openFile(path);
-            printFile(arq);
+            printFile(arq, xdados);
 
             fclose(arq);
         }
@@ -81,14 +80,13 @@ void readDir(DIR *dirstream, char *dirname)
 }
 
 
-int getPerName(char *str)
+int getPerName(tdados *xdados, char *str)
 {
     // Returns first token
     char *tag = "DETALHAMENTO-DO-ARTIGO";
     char *str2 = strdup(str);
     char *str3;
     // Set str2 offset after tag
-
     while((str2 = strstr(str2, tag)) != NULL){
         str3 = strdup(str2);
         char* token = strtok(str3, "\"");    
@@ -96,6 +94,7 @@ int getPerName(char *str)
         token = strtok(token, "\"");
         token = strtok(token, "\"");
         printf("%s\n", token);
+        addPerToStruct(xdados, token);
         str2 += strlen(tag);
         free(str3);
     }    
@@ -103,5 +102,55 @@ int getPerName(char *str)
     free(str2);
 
     return 0;
+}
+
+
+void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
+   
+    FILE *per = openFile(pathPer);
+    FILE *conf = openFile(pathCon);
+    int perSize = getSize(per);
+    int confSize = getSize(conf);
+
+    for (int i = 0; i < 9; i++)
+    {
+        xdados[i].nome = i;
+        xdados[i].quantidade = 0;
+        xdados[i].qtdPeriodicos = 0;
+        xdados[i].periodico = malloc(sizeof(pasta) * perSize);
+        xdados[i].conferencia = malloc(sizeof(pasta) * confSize);
+
+    }
+
+    
+    getPerLines(per, xdados);
+    getConfLines(conf, xdados);
+    fclose(per);
+    fclose(conf);
+
+}
+
+void getPerLines(FILE *arq, tdados *xdados){
+    char line[LINESIZE+1];
+    
+    fgets(line, LINESIZE, arq);
+    while(!feof(arq)){
+        setPerNames(line, xdados);
+        fgets(line, LINESIZE, arq);
+        
+    }
+
+}
+
+void getConfLines(FILE *arq, tdados *xdados){
+    char line[LINESIZE+1];
+    
+    fgets(line, LINESIZE, arq);
+    while(!feof(arq)){
+        setConfNames(line, xdados);
+        fgets(line, LINESIZE, arq);
+        
+    }
+
 }
 

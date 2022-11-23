@@ -1,7 +1,5 @@
 #include "libdir.h"
 #include "libutil.h"
-#include "libstruct.h"
-
 
 int main (int argc, char **argv)
 {   
@@ -12,10 +10,10 @@ int main (int argc, char **argv)
     getOptions(argc, argv, &path, &pathCon, &pathPer);
     
     tdados *xdados = malloc(sizeof(tdados) * QTD_E);
-    inicializaEstratos(xdados, pathCon, pathPer);
+    inicializaEstratos(xdados, pathPer, pathCon);
 
     DIR *dirstream = openDir(path) ;
-    readDir(dirstream, path);
+    readDir(dirstream, xdados, path);
 
     free(xdados);
     (void) closedir(dirstream);

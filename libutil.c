@@ -25,3 +25,15 @@ void getOptions(int argc, char *argv[], char** path, char** pathCon, char** path
 
 }
 
+char* turnUpperCase(char *str){
+
+    //make string uppercase
+    for (int i = 0; str[i]; i++){
+        str[i] = toupper(str[i]);
+    }
+
+    printf("%s\n", str);
+
+    return str;
+    
+}

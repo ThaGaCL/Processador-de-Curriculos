@@ -26,7 +26,6 @@ const char *enumName(estrato c){
     }
 }
 
-
 void printPer(tdados *xdados){
     for(int i = 0; i < 9; i++){
         for(int j = 0; j <= xdados[i].qtdPeriodicos-1; j++){
@@ -42,7 +41,6 @@ void printConf(tdados *xdados){
         }
     }
 }
-
 
 void setPerNames(char *line,tdados *xdados){
 
@@ -89,60 +87,14 @@ void setConfNames(char *line,tdados *xdados){
 
 }
 
-void getPerLines(FILE *arq, tdados *xdados){
-    char line[LINESIZE+1];
-    
-    fgets(line, LINESIZE, arq);
-    while(!feof(arq)){
-        setPerNames(line, xdados);
-        fgets(line, LINESIZE, arq);
-        
-    }
-
-}
-
-void getConfLines(FILE *arq, tdados *xdados){
-    char line[LINESIZE+1];
-    
-    fgets(line, LINESIZE, arq);
-    while(!feof(arq)){
-        setConfNames(line, xdados);
-        fgets(line, LINESIZE, arq);
-        
-    }
-
-}
-
-void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
-   
-    FILE *per = openFile(pathPer);
-    FILE *conf = openFile(pathCon);
-    int perSize = getSize(per);
-    int confSize = getSize(conf);
-
-    for (int i = 0; i < 9; i++)
-    {
-        xdados[i].nome = i;
-        xdados[i].quantidade = 0;
-        xdados[i].qtdPeriodicos = 0;
-        xdados[i].periodico = malloc(sizeof(pasta) * perSize);
-        xdados[i].conferencia = malloc(sizeof(pasta) * confSize);
-
-    }
-
-    
-    getPerLines(per, xdados);
-    getConfLines(conf, xdados);
-    fclose(per);
-    fclose(conf);
-
-}
-
-void addToStruct(tdados *xdados, char *nome){
+void addPerToStruct(tdados *xdados, char *nome){
+    turnUpperCase(nome);
+  //xdados->periodico[xdados->qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
-            if(strstr(xdados[i].periodico[j].titulo, nome)){
+            if(strstr( xdados[i].periodico[j].titulo, nome)){
+                xdados[i].periodico[j].quantidade++;
                 printf("ACHOU NO %s\n", xdados[i].periodico[j].titulo);
             }
         }

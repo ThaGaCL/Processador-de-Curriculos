@@ -3,7 +3,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include "libdir.h"
 
 #define QTD_E 9
 typedef enum{
@@ -18,7 +17,18 @@ typedef enum{
     C
 } estrato;
 
-const char *enumName(estrato c);
+typedef struct pesquisador{
+    char *nome;
+    int a1;
+    int a2;
+    int a3;
+    int a4;
+    int b1;
+    int b2;
+    int b3;
+    int b4;
+    int c;
+} xpesquisador;
 
 typedef struct pasta{
     char *titulo;
@@ -42,9 +52,4 @@ void setPerNames(char *line,tdados *xdados);
 
 void setConfNames(char *line,tdados *xdados);
 
-void getPerLines(FILE *arq, tdados *xdados);
-
-void getConfLines(FILE *arq, tdados *xdados);
-
-void inicializaEstratos(tdados *xdados, char *per, char *con);
-
+void addPerToStruct(tdados *xdados, char *nome);
