@@ -1,4 +1,5 @@
 #include "libstruct.h"
+#include "libutil.h"
 
 const char *enumName(estrato c){
     switch (c)
@@ -21,13 +22,15 @@ const char *enumName(estrato c){
         return ("B4");
     case C:
         return ("C");
+    case NC:
+        return ("NC");
     default:
         return ("");
     }
 }
 
 void printPer(tdados *xdados){
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < QTD_E; i++){
         for(int j = 0; j <= xdados[i].qtdPeriodicos-1; j++){
              printf("%s\n", xdados[i].periodico[j].titulo);
         }
@@ -35,7 +38,7 @@ void printPer(tdados *xdados){
 }
 
 void printConf(tdados *xdados){
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < QTD_E; i++){
         for(int j = 0; j <= xdados[i].qtdConferencias-1; j++){
              printf("%s\n", xdados[i].conferencia[j].titulo);
         }
@@ -45,7 +48,7 @@ void printConf(tdados *xdados){
 void setPerNames(char *line,tdados *xdados){
 
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < QTD_E-1; i++)
     {
         //get the last three characters of the line
         char *lastThree = line + strlen(line) - 3;
@@ -68,7 +71,7 @@ void setPerNames(char *line,tdados *xdados){
 void setConfNames(char *line,tdados *xdados){
 
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < QTD_E-1; i++)
     {
         //get the last three characters of the line
         char *lastThree = line + strlen(line) - 3;
@@ -81,24 +84,81 @@ void setConfNames(char *line,tdados *xdados){
             xdados[i].conferencia[xdados[i].qtdConferencias].titulo = malloc(sizeof(char)*strlen(nome));    
             xdados[i].conferencia[xdados[i].qtdConferencias].titulo = strncpy(xdados[i].conferencia[xdados[i].qtdConferencias].titulo, nome, strlen(nome));
             xdados[i].qtdConferencias++;
+            
         }
 
     }
 
 }
 
-void addPerToStruct(tdados *xdados, char *nome){
+void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores){
     turnUpperCase(nome);
-  //xdados->periodico[xdados->qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));
+    int classificado;
+    classificado = 0;
+
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
             if(strstr( xdados[i].periodico[j].titulo, nome)){
                 xdados[i].periodico[j].quantidade++;
-                printf("ACHOU NO %s\n", xdados[i].periodico[j].titulo);
+                xdados[i].quantidade++;
+                xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i]++;
+                //printf("%d\n", xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i]);
+                classificado = 1;
             }
         }
     }
+    if(classificado == 0){
+        xdados[9].periodico[xdados[9].qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));
+        xdados[9].periodico[xdados[9].qtdPeriodicos].titulo = strncpy(xdados[9].periodico[xdados[9].qtdPeriodicos].titulo, nome, strlen(nome));
+        xdados[9].periodico[xdados[9].qtdPeriodicos].quantidade++;
+        xdados[9].quantidade++;
+        xdados[9].qtdPeriodicos++;
+    }
 }
 
+void printPeriodicosResumo(tdados *xdados){
 
+    for (int i = 0; i < QTD_E-1; i++)
+    {
+        printf("Estrato %s:\n", enumName(xdados[i].nome));
+
+        for(int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
+            if(xdados[i].periodico[j].quantidade > 0){
+                printf("%s: %d\n", xdados[i].periodico[j].titulo, xdados[i].periodico[j].quantidade);
+            }    
+        }
+        
+        printf("\n");
+    }
+    
+}
+
+void printNaoClassificados(tdados *xdados){
+
+        printf("Estrato %s:\n", enumName(xdados[9].nome));
+
+        for(int j = 0; j < xdados[9].qtdPeriodicos; j++)
+            printf("%s: %d\n", xdados[9].periodico[j].titulo, xdados[9].periodico[j].quantidade);
+        
+        printf("\n");
+
+    
+}
+
+void inicializaStructRes(tpesquisadores *xpesquisadores){ 
+    xpesquisadores->qtdPesquisadores = 0;
+    xpesquisadores->pesquisador = NULL;
+}
+
+void inicializaRes(tpesquisadores *xpesquisadores, char *nome){
+    xpesquisadores->pesquisador = realloc(xpesquisadores->pesquisador, sizeof(tpesquisador)*(xpesquisadores->qtdPesquisadores+1+(sizeof(int)*QTD_E)));
+    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome = malloc(sizeof(char)*strlen(nome));
+    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome = strncpy(xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome, nome, strlen(nome));
+    
+    for(int i=0; i < QTD_E-1; i++){
+        xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i] = 0;
+    }
+
+    xpesquisadores->qtdPesquisadores++;
+}

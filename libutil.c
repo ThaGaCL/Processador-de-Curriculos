@@ -32,8 +32,6 @@ char* turnUpperCase(char *str){
         str[i] = toupper(str[i]);
     }
 
-    printf("%s\n", str);
-
     return str;
     
 }

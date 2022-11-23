@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-#define QTD_E 9
+#define QTD_E 10
 typedef enum{
     A1,
     A2,
@@ -14,21 +14,19 @@ typedef enum{
     B2,
     B3,
     B4,
-    C
+    C,
+    NC
 } estrato;
 
 typedef struct pesquisador{
     char *nome;
-    int a1;
-    int a2;
-    int a3;
-    int a4;
-    int b1;
-    int b2;
-    int b3;
-    int b4;
-    int c;
-} xpesquisador;
+    int estratos[QTD_E];
+} tpesquisador;
+
+typedef struct pesquisadores{
+    tpesquisador *pesquisador;
+    int qtdPesquisadores;
+} tpesquisadores;
 
 typedef struct pasta{
     char *titulo;
@@ -44,6 +42,12 @@ typedef struct dados{
     int quantidade;
 } tdados;
 
+void setPerToRes(tdados *xdados, tpesquisador *xpesquisador);
+
+void inicializaStructRes(tpesquisadores *xpesquisadores);
+
+void inicializaRes(tpesquisadores *xpesquisadores, char *nome);
+
 void printPer(tdados *xdados);
 
 void printConf(tdados *xdados);
@@ -52,4 +56,10 @@ void setPerNames(char *line,tdados *xdados);
 
 void setConfNames(char *line,tdados *xdados);
 
-void addPerToStruct(tdados *xdados, char *nome);
+void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores);
+
+void freeDados(tdados *xdados);
+
+void printPeriodicosResumo(tdados *xdados);
+
+void printNaoClassificados(tdados *xdados);

@@ -12,15 +12,15 @@ FILE* openFile(char* filename);
 
 int getSize(FILE* file);
 
-void printFile(FILE* arq, tdados *xdados);
+void printFile(FILE* arq, tdados *xdados, tpesquisadores *xpesquisadores);
 
 DIR* openDir(char* dirname);
 
-void readDir(DIR* dirstream, tdados *xdados, char* dirname);
+void readDir(DIR* dirstream, tdados *xdados, char* dirname, tpesquisadores *xpesquisadores);
 
 void getFileLines(FILE *arq);
 
-int getPerName(tdados *xdados, char *str);
+int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores);
 
 void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon);
 

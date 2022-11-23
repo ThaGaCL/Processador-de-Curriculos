@@ -22,7 +22,7 @@ int getSize(FILE *file)
     return size;
 }
 
-void printFile(FILE *arq, tdados *xdados)
+void printFile(FILE *arq, tdados *xdados, tpesquisadores *xpesquisadores)
 {
     int fileSize;
     fseek(arq, 0, SEEK_END);
@@ -33,7 +33,7 @@ void printFile(FILE *arq, tdados *xdados)
 
     fread(file_content, sizeof(char), fileSize, arq);
  
-    getPerName(xdados, file_content);
+    getPerName(xdados, file_content, xpesquisadores);
 }
 
 DIR *openDir(char *dirname)
@@ -49,7 +49,7 @@ DIR *openDir(char *dirname)
     return dirstream;
 }
 
-void readDir(DIR *dirstream, tdados *xdados, char *dirname)
+void readDir(DIR *dirstream, tdados *xdados, char *dirname, tpesquisadores *xpesquisadores)
 {
     struct dirent *direntry;
 
@@ -72,20 +72,38 @@ void readDir(DIR *dirstream, tdados *xdados, char *dirname)
             path = strcat(path, direntry->d_name);
 
             FILE *arq = openFile(path);
-            printFile(arq, xdados);
+            printFile(arq, xdados, xpesquisadores);
 
             fclose(arq);
         }
     }
 }
 
+char *getResName(char* str){
+ char *tag = "NOME-COMPLETO";
+        
+        str = strstr(str, tag); // Encontra a tag na string
+        char* str3 = strdup(str); // Copia a string
+        
+        //Separa o token do resto da string 
+        char* token = strtok(str3, "\"");    
+        token = strtok(NULL, "\"");
+        token = strtok(token, "\"");
+        token = strtok(token, "\"");
 
-int getPerName(tdados *xdados, char *str)
+    return token;
+
+}
+
+int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores)
 {
     // Returns first token
     char *tag = "DETALHAMENTO-DO-ARTIGO";
     char *str2 = strdup(str);
     char *str3;
+    char *nome = getResName(str);
+    inicializaRes(xpesquisadores, nome);
+    //printf("%s\n", nome);
     // Set str2 offset after tag
     while((str2 = strstr(str2, tag)) != NULL){
         str3 = strdup(str2);
@@ -93,12 +111,13 @@ int getPerName(tdados *xdados, char *str)
         token = strtok(NULL, "\"");
         token = strtok(token, "\"");
         token = strtok(token, "\"");
-        printf("%s\n", token);
-        addPerToStruct(xdados, token);
+        addPerToStruct(xdados, token, xpesquisadores);
         str2 += strlen(tag);
         free(str3);
     }    
 
+    // printf("%d\n", xpesquisador->qtdPesquisadores);
+    // xpesquisador->qtdPesquisadores++;
     free(str2);
 
     return 0;
@@ -112,7 +131,7 @@ void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
     int perSize = getSize(per);
     int confSize = getSize(conf);
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < QTD_E; i++)
     {
         xdados[i].nome = i;
         xdados[i].quantidade = 0;
@@ -128,6 +147,15 @@ void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon){
     fclose(per);
     fclose(conf);
 
+}
+
+void freeDados(tdados *xdados){
+    for (int i = 0; i < QTD_E; i++)
+    {
+        free(xdados[i].periodico);
+        free(xdados[i].conferencia);
+    }
+    free(xdados);
 }
 
 void getPerLines(FILE *arq, tdados *xdados){
