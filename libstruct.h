@@ -30,6 +30,7 @@ typedef struct pesquisadores{
 
 typedef struct pasta{
     char *titulo;
+    int ano;
     int quantidade;
 } pasta;
 

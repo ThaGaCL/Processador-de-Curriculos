@@ -29,6 +29,7 @@ const char *enumName(estrato c){
     }
 }
 
+// Imprime os periodicos presentes na Struct de Dados
 void printPer(tdados *xdados){
     for(int i = 0; i < QTD_E; i++){
         for(int j = 0; j <= xdados[i].qtdPeriodicos-1; j++){
@@ -37,6 +38,7 @@ void printPer(tdados *xdados){
     }
 }
 
+// Imprime as conferencias presentes na Struct de Dados
 void printConf(tdados *xdados){
     for(int i = 0; i < QTD_E; i++){
         for(int j = 0; j <= xdados[i].qtdConferencias-1; j++){
@@ -45,17 +47,19 @@ void printConf(tdados *xdados){
     }
 }
 
+// Insere o nome do periocico na Struct de Dados
 void setPerNames(char *line,tdados *xdados){
 
 
     for (int i = 0; i < QTD_E-1; i++)
     {
-        //get the last three characters of the line
-        char *lastThree = line + strlen(line) - 3;
-        
 
+        char *lastThree = line + strlen(line) - 3; // Pega os tres ultimos char da string para descobrir a classificacao
+                                                
+        // Checa a qual estrato o periodico pertence                                              
         if(strstr(lastThree,enumName(xdados[i].nome))){
             
+            // Insere o nome do periodico na Struct de Dados
             char *nome = malloc(sizeof(char)*strlen(line));
             nome = strncpy(nome,line, (strlen(line)-strlen(enumName(xdados[i].nome))-1));
             xdados[i].periodico[xdados[i].qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));    
@@ -68,17 +72,19 @@ void setPerNames(char *line,tdados *xdados){
 
 }
 
+// Insere o nome da conferencia na Struct de Dados
 void setConfNames(char *line,tdados *xdados){
 
 
     for (int i = 0; i < QTD_E-1; i++)
     {
-        //get the last three characters of the line
-        char *lastThree = line + strlen(line) - 3;
-        
 
+        char *lastThree = line + strlen(line) - 3; // Pega os tres ultimos char da string para descobrir a classificacao
+        
+        // Checa a qual estrato a conferencia pertence                                              
         if(strstr(lastThree,enumName(xdados[i].nome))){
             
+            // Insere o nome da conferencia na Struct de Dados
             char *nome = malloc(sizeof(char)*strlen(line));
             nome = strncpy(nome,line, (strlen(line)-strlen(enumName(xdados[i].nome))-1));
             xdados[i].conferencia[xdados[i].qtdConferencias].titulo = malloc(sizeof(char)*strlen(nome));    
@@ -91,23 +97,24 @@ void setConfNames(char *line,tdados *xdados){
 
 }
 
+// Insere os periodicos do curriculo na Struct de Dados
 void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores){
-    turnUpperCase(nome);
+    turnUpperCase(nome); // Modifica a string nome para que fique no maiusculo
     int classificado;
-    classificado = 0;
+    classificado = 0; // Diz se o periodico foi classificado entre os estratos
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < QTD_E; i++)
     {
-        for (int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
+        for (int j = 0; j < xdados[i].qtdPeriodicos; j++){
+            // Para cada periodico na Struct de Dados checa se o que esta no curriculo foi classificado
             if(strstr( xdados[i].periodico[j].titulo, nome)){
                 xdados[i].periodico[j].quantidade++;
                 xdados[i].quantidade++;
-                xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i]++;
-                //printf("%d\n", xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i]);
                 classificado = 1;
             }
         }
     }
+    // Se o periodico nao foi classificado, o classifica como NC (Nao Classificado)
     if(classificado == 0){
         xdados[9].periodico[xdados[9].qtdPeriodicos].titulo = malloc(sizeof(char)*strlen(nome));
         xdados[9].periodico[xdados[9].qtdPeriodicos].titulo = strncpy(xdados[9].periodico[xdados[9].qtdPeriodicos].titulo, nome, strlen(nome));
@@ -117,13 +124,14 @@ void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores){
     }
 }
 
+// Imprime o Resumo dos Periodicos
 void printPeriodicosResumo(tdados *xdados){
 
     for (int i = 0; i < QTD_E-1; i++)
     {
         printf("Estrato %s:\n", enumName(xdados[i].nome));
 
-        for(int j = 0; j < xdados[i].qtdPeriodicos-1; j++){
+        for(int j = 0; j < xdados[i].qtdPeriodicos; j++){
             if(xdados[i].periodico[j].quantidade > 0){
                 printf("%s: %d\n", xdados[i].periodico[j].titulo, xdados[i].periodico[j].quantidade);
             }    
@@ -134,6 +142,7 @@ void printPeriodicosResumo(tdados *xdados){
     
 }
 
+// Imprime o Resumo dos Periodicos NC
 void printNaoClassificados(tdados *xdados){
 
         printf("Estrato %s:\n", enumName(xdados[9].nome));
