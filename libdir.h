@@ -20,10 +20,14 @@ void readDir(DIR* dirstream, tdados *xdados, char* dirname, tpesquisadores *xpes
 
 void getFileLines(FILE *arq);
 
-int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores);
+int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores, char *nome);
 
 void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon);
 
 void getPerLines(FILE *arq, tdados *xdados);
 
 void getConfLines(FILE *arq, tdados *xdados);
+
+char *getResName(char* str);
+
+int getDirSize(char* path);

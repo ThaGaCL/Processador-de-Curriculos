@@ -110,6 +110,7 @@ void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores){
             if(strstr( xdados[i].periodico[j].titulo, nome)){
                 xdados[i].periodico[j].quantidade++;
                 xdados[i].quantidade++;
+                xpesquisadores->estratosPer[xpesquisadores->qtdPesquisadores][i]++;
                 classificado = 1;
             }
         }
@@ -120,8 +121,36 @@ void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores){
         xdados[9].periodico[xdados[9].qtdPeriodicos].titulo = strncpy(xdados[9].periodico[xdados[9].qtdPeriodicos].titulo, nome, strlen(nome));
         xdados[9].periodico[xdados[9].qtdPeriodicos].quantidade++;
         xdados[9].quantidade++;
+        xpesquisadores->estratosPer[xpesquisadores->qtdPesquisadores][9]++;
         xdados[9].qtdPeriodicos++;
     }
+}
+
+
+// Inicializa a Struct de Pesquisadores
+void inicializaStructRes(tpesquisadores *xpesquisadores, int dirSize){
+    xpesquisadores->qtdPesquisadores = 0;
+    
+    xpesquisadores->estratosPer = (int **)malloc(dirSize * sizeof(int *));
+    
+    for(int i = 0; i < dirSize; i++)
+        xpesquisadores->estratosPer[i] = (int *)malloc(QTD_E * sizeof(int));
+    
+    for(int i = 0; i < dirSize; i++){
+        
+        for(int j = 0; j < QTD_E; j++)
+            xpesquisadores->estratosPer[i][j] = 0;
+        
+    }
+
+}
+
+// Inicializa um Pesquisador
+void inicializaRes(tpesquisadores *xpesquisadores, char *nome){
+    //inicializa vetor pesquisador
+    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores] = malloc(sizeof(char)*strlen(nome));
+    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores] = strncpy(xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores], nome, strlen(nome));
+        
 }
 
 // Imprime o Resumo dos Periodicos
@@ -155,19 +184,19 @@ void printNaoClassificados(tdados *xdados){
     
 }
 
-void inicializaStructRes(tpesquisadores *xpesquisadores){ 
-    xpesquisadores->qtdPesquisadores = 0;
-    xpesquisadores->pesquisador = NULL;
-}
+// Imprime o resumo dos Pesquisadores   
+void imprimeResumoRes(tpesquisadores *xpesquisadores){
+    for(int i = 0; i < xpesquisadores->qtdPesquisadores; i++){
+        printf("Pesquisador: %s\n", xpesquisadores->pesquisador[i]);
+        printf("+------------+------------+\n|Conferencias| Periódicos |\n+------------+------------+\n");
+        
+        for(int j = 0; j < QTD_E-2; j++){
+            printf("| %s: %d      |   %s: %d    |\n", enumName(j), xpesquisadores->estratosPer[i][j], enumName(j), xpesquisadores->estratosPer[i][j]);
+        
+        }
 
-void inicializaRes(tpesquisadores *xpesquisadores, char *nome){
-    xpesquisadores->pesquisador = realloc(xpesquisadores->pesquisador, sizeof(tpesquisador)*(xpesquisadores->qtdPesquisadores+1+(sizeof(int)*QTD_E)));
-    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome = malloc(sizeof(char)*strlen(nome));
-    xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome = strncpy(xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].nome, nome, strlen(nome));
-    
-    for(int i=0; i < QTD_E-1; i++){
-        xpesquisadores->pesquisador[xpesquisadores->qtdPesquisadores].estratos[i] = 0;
+        printf("| %s: %d       |   %s: %d     |\n", enumName(8), xpesquisadores->estratosPer[i][8], enumName(8), xpesquisadores->estratosPer[i][8]);
+        printf("+------------+------------+\n");
+        printf("\n");
     }
-
-    xpesquisadores->qtdPesquisadores++;
 }

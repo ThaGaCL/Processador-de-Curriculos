@@ -29,10 +29,15 @@ void printFile(FILE *arq, tdados *xdados, tpesquisadores *xpesquisadores)
     fileSize = getSize(arq); // Calcula o tamanho do arquivo
 
     char *file_content = (char *)malloc(fileSize * sizeof(char)); // Aloca tamanho da string a partir do tamanho do arquivo
-
     fread(file_content, sizeof(char), fileSize, arq); // Insere o arquivo inteiro na string
- 
-    getPerName(xdados, file_content, xpesquisadores); // Pega o nome dos periodicos presentes no arquivo e os insere no local correto
+    
+    char *nome = getResName(file_content); // Pega o nome do pesquisador responsavel
+    inicializaRes(xpesquisadores, nome);    // Inicializa o pesquisador
+
+
+    getPerName(xdados, file_content, xpesquisadores, nome); // Pega o nome dos periodicos presentes no arquivo e os insere no local correto
+    
+    xpesquisadores->qtdPesquisadores++; // Incrementa o numero de pesquisadores
 }
 
 // Abre o diretorio
@@ -77,6 +82,7 @@ void readDir(DIR *dirstream, tdados *xdados, char *dirname, tpesquisadores *xpes
             path = strcat(path, direntry->d_name);
 
             FILE *arq = openFile(path); // Abre o arquivo
+            
             printFile(arq, xdados, xpesquisadores);
 
             fclose(arq);
@@ -101,13 +107,12 @@ char *getResName(char* str){
 }
 
 // Pega o nome dos periodicos presentes no arquivo e os insere no local correto
-int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores)
+int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores, char *nome)
 {
     char *tagPer1 = "DETALHAMENTO-DO-ARTIGO"; 
     char *str2 = strdup(str); // Duplica a string 
     char *str3;
-    char *nome = getResName(str); // Pega o nome do pesquisador responsavel
-    inicializaRes(xpesquisadores, nome);    // Inicializa o pesquisador
+
 
     // Enquanto a tag se repetir no arquivo repete
     while((str2 = strstr(str2, tagPer1)) != NULL){
@@ -117,11 +122,13 @@ int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores)
         token = strtok(NULL, "\"");
         token = strtok(token, "\"");
         token = strtok(token, "\"");
+        
         addPerToStruct(xdados, token, xpesquisadores); // Insere o periodico na Struct de Dados
         str2 += strlen(tagPer1);    // Avança a string 2 a frente do ultimo tag encontrado
         free(str3); // Libera a memoria alocada para duplicar a string 2
     }
 
+    
     free(str2); // Libera a memoria alocada para duplicar a string
 
     return 0;
@@ -192,3 +199,18 @@ void getConfLines(FILE *arq, tdados *xdados){
 
 }
 
+int getDirSize(char* path){
+    //get how many files are in directory[
+
+    DIR *dir = openDir(path);
+    struct dirent *dirent;
+    int count = 0;
+    while ((dirent = readdir(dir)) != NULL) {
+        if (dirent->d_type == DT_REG) {
+            count++;
+        }
+    }
+    rewinddir(dir);
+    (void)closedir(dir);
+    return count;
+}
