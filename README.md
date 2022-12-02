@@ -1,4 +1,4 @@
-# prog2lattes
+# Prog2: Lattes-qualis
 
 Especificações:
 
