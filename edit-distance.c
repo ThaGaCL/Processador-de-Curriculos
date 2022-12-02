@@ -1,5 +1,8 @@
 // Extraido de e adaptado de:
 // https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
+// Adaptada por:
+// Nico Ramos
+
 #include "libutil.h"
 #include "edit-distance.h"
 
