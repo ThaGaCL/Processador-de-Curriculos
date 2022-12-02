@@ -3,31 +3,44 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "libutil.h"
 #include "libstruct.h"
-
+ 
 #define LINESIZE 1024
 
+// ----------*---------- MANIPULACAO DE ARQUIVOS ----------*----------
+
+// Abre o arquivo
 FILE* openFile(char* filename);
 
+// Calcula o tamanho do arquivo
 int getSize(FILE* file);
 
-void printFile(FILE* arq, tdados *xdados, tpesquisadores *xpesquisadores);
-
-DIR* openDir(char* dirname);
-
-void readDir(DIR* dirstream, tdados *xdados, char* dirname, tpesquisadores *xpesquisadores);
-
-void getFileLines(FILE *arq);
-
-int getPerName(tdados *xdados, char *str, tpesquisadores *xpesquisadores, char *nome);
-
-void inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon);
-
+// Pega as linhas do arquivo de periodicos
 void getPerLines(FILE *arq, tdados *xdados);
 
+// Pega as linhas do arquivo de conferencias
 void getConfLines(FILE *arq, tdados *xdados);
 
-char *getResName(char* str);
+// Processa os arquivos de currículos
+int processesResumes(FILE* arq, tdados *xdados, tpesquisadores *xpesquisadores);
 
+// Copia o nome das conferencias e perifericos para dentro da Struct 
+int inicializaEstratos(tdados *xdados, char *pathPer, char *pathCon);
+
+// ----------*----------*----------*----------*----------*----------*----
+
+
+// ----------* ---------- MANIPULACAO DE DIRETORIOS ----------*----------
+
+// Abre o diretorio
+DIR* openDir(char* dirname);
+
+// Le o diretorio
+void readDir(DIR* dirstream, tdados *xdados, char* dirname, tpesquisadores *xpesquisadores);
+
+// Calcula o tamanho do diretorio
 int getDirSize(char* path);
+
+// ----------*----------*----------*----------*----------*----------*----

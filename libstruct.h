@@ -1,8 +1,14 @@
+// libstruct.h
+// Thales Carvalho
+// BCC 2021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include "edit-distance.h"
+
 
 #define QTD_E 10
 #define LINESIZE 1024
@@ -41,13 +47,7 @@ typedef struct dados{
     int quantidade;
 } tdados;
 
-void setPerToRes(tdados *xdados, tpesquisadores *xpesquisadores);
-
-// Inicializa a struct de pesquisadores
-void inicializaStructRes(tpesquisadores *xpesquisadores, int dirSize);
-
-// Inicializa um Pesquisador
-void inicializaRes(tpesquisadores *xpesquisadores, char *nome);
+// ----------* ---------- FUNCOES DA STRUCT DE DADOS ----------*----------
 
 // Imprime os periodicos presentes na Struct de Dados
 void printPer(tdados *xdados);
@@ -62,16 +62,41 @@ void setPerNames(char *line,tdados *xdados);
 void setConfNames(char *line,tdados *xdados);
 
 // Insere o nome do periocico na Struct de Dados
-void addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores);
+int addPerToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores);
+
+// Insere os periodicos do curriculo na Struct de Dados
+int addConfToStruct(tdados *xdados, char *nome, tpesquisadores *xpesquisadores);
 
 // Libera a memoria alocada para a struct de dados
 void freeDados(tdados *xdados);
+
+// ----------*----------*----------*----------*----------*----------*----------
+
+// ----------* ---------- FUNCOES DA STRUCT DE PESQUISADORES ----------*----------
+
+// Inicializa a struct de pesquisadores
+int inicializaStructRes(tpesquisadores *xpesquisadores, int dirSize);
+
+// Inicializa um Pesquisador
+int inicializaRes(tpesquisadores *xpesquisadores, char *nome);
+
+// Libera a memoria alocada para a struct de pesquisadores
+void freeStructRes(tpesquisadores *xpesquisadores, int dirSize);
+
+// ----------*----------*----------*----------*----------*----------*----------
+
+// ----------* ---------- FUNCOES DE IMPRESSAO ----------*----------
 
 // Imprime o Resumo dos Periodicos
 void printPeriodicosResumo(tdados *xdados);
 
 // Imprime o Resumo das Conferencias
+void printConfereciasResumo(tdados *xdados);
+
+// Imprime o Resumo das Conferencias
 void printNaoClassificados(tdados *xdados);
 
 // Imprime o resumo dos Pesquisadores   
-void imprimeResumoRes(tpesquisadores *xpesquisadores);
+void printResumoRes(tpesquisadores *xpesquisadores);
+
+// ----------*----------*----------*----------*----------*----------
