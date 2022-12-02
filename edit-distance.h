@@ -1,5 +1,7 @@
 // Extraido e adaptado de:
-// de https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
+// https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C
+// Adaptada por:
+// Nico Ramos
 
 #ifndef _EDITDISTANCE_
 #define _EDITDISTANCE_
