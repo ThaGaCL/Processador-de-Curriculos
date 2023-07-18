@@ -1,6 +1,6 @@
 # Processador de Curriculos Lattes
 ## Universidade Federal do Paraná
-### CI1001 – Programação 1
+### CI1001 – Programação 2
 
 #### Especificações:
 
